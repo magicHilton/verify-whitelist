@@ -1,7 +1,6 @@
 // asdfasdfsd
 import path from 'path'
 import fs from 'fs'
-import ethers from 'ethers'
 import keccak256 from 'keccak256' // Keccak256 hashing
 import MerkleTree from 'merkletreejs' // MerkleTree.js
 
