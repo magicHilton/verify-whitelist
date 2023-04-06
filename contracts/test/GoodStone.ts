@@ -1,19 +1,8 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import fs from 'fs'
-import path from 'path'
-import keccak256 from 'keccak256'
-import MerkleTree from 'merkletreejs'
 import { getAddress } from 'ethers/lib/utils'
-
-const merklePath = path.resolve(__dirname, '../Merkle.json')
-
-interface IMerkleInfo {
-  root: string
-  tree: any
-  whitelist: string[]
-}
+import { getMerkleData, getmerkleTree } from '../utils/verify'
 
 async function deploy() {
   const _GoodStone = await ethers.getContractFactory('GoodStone')
@@ -25,23 +14,6 @@ async function deploy() {
   }
 }
 
-async function getMerkleData() {
-  const _merkletree = await fs.readFileSync(merklePath)
-  const merkletree: IMerkleInfo = JSON.parse(_merkletree.toString())
-  return {
-    ...merkletree,
-  }
-}
-
-async function createProof(a: string): Promise<string[]> {
-  const { whitelist } = await getMerkleData()
-  const merkleTree = new MerkleTree(whitelist, keccak256, {
-    sortPairs: true,
-  })
-  const proof: string[] = merkleTree.getHexProof(a)
-  return proof
-}
-
 describe('GoodStone', async function () {
   console.log('start test goodStone.sol')
   it('Should set the right owner', async function () {
@@ -51,8 +23,7 @@ describe('GoodStone', async function () {
   describe('deploy GoodStone', async function () {
     it('root', async function () {
       const { GoodStone } = await loadFixture(deploy)
-      const merkletree = await getMerkleData()
-      console.log(merkletree.root, 'root - static')
+      const merkletree = await getmerkleTree()
       await GoodStone.setRoot(merkletree.root)
       expect(await GoodStone.getRoot()).to.equal(merkletree.root)
     })
@@ -61,32 +32,24 @@ describe('GoodStone', async function () {
   describe('preSaleMint', async function () {
     it('preSaleMint', async function () {
       const { GoodStone, owner } = await loadFixture(deploy)
-      const merkletree = await getMerkleData()
-      await GoodStone.setRoot(merkletree.root)
+      const { root, getProof } = await getmerkleTree()
+      // console.log(verify(owner.address), 'verify')
+      await GoodStone.flipSaleActive()
+      await GoodStone.setRoot(root) // mock frontend
 
-      console.log(owner.address, ' address->') // 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-      const proof: string[] = await createProof(owner.address)
+      // const data = await getMerkleData()
+      // await GoodStone.setRoot(data.root) // mock frontend
+
       const mintPrice = await GoodStone.mintPrice()
-      console.log(proof, 'proof')
-      console.log(mintPrice.toNumber(), 'price')
 
       const balanceOf = await GoodStone.balanceOf(owner.address)
 
-      await GoodStone.preSaleMint(
-        1,
-        [
-          '0x6f4e9783e4127f70224aeee5ca63c5a42f312237',
-          '0xa4c8c642303530a278e8d9995b57d3cef220a8130341328b557530b66f4f42f3',
-        ],
-        {
-          value: mintPrice,
-        },
-      )
-
+      await GoodStone.preSaleMint(1, getProof(owner.address), {
+        value: mintPrice,
+      })
       const currentBalanceOf = await GoodStone.balanceOf(
         getAddress(owner.address),
       )
-
       expect(balanceOf.toNumber()).to.equal(currentBalanceOf.toNumber() - 1)
     })
   })

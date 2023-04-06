@@ -1,1 +1,6 @@
 /node_modules
+
+/Merkle.json
+
+/whitelist.json
+/.json
