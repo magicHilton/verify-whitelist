@@ -1,6 +1,7 @@
 import '@rainbow-me/rainbowkit/styles.css'
 import {
   ConnectButton,
+  darkTheme,
   getDefaultWallets,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
@@ -31,7 +32,10 @@ const wagmiClient = createClient({
 const ConnectWallectProvider: React.FC<any> = (props) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider
+        // theme={darkTheme()}
+        chains={chains}
+      >
         <CommonLayout>{props.children}</CommonLayout>
       </RainbowKitProvider>
     </WagmiConfig>
