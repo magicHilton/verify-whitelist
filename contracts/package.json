@@ -4,19 +4,23 @@
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@openzeppelin/hardhat-upgrades": "^1.22.1",
-    "keccak256": "^1.0.6",
-    "merkletreejs": "^0.3.9",
     "ethers": "^5.7.2",
-    "hardhat": "^2.13.0"
+    "hardhat": "^2.13.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.3.9"
   },
   "scripts": {
     "compile": "npx hardhat clean && npx hardhat compile",
     "help": "npx hardhat help",
     "deploy": "npx hardhat run scripts/deploy.ts",
     "test": "npm run compile && npx hardhat test",
-    "node": "npx hardhat node"
+    "node": "npx hardhat node",
+    "preDeploy": "npx hardhat run scripts/preDeploy.ts --network sepolia",
+    "verify": "npx hardhat verify --network sepolia 0xe2a32ad43fA4283650C9B2C47CA10619EB3f63Fe",
+    "flatten": "npx hardhat flatten contracts/GoodStone.sol"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.8.2"
+    "@openzeppelin/contracts": "^4.8.2",
+    "dotenv": "^16.0.3"
   }
 }

@@ -4,10 +4,13 @@ import NavMenu, { menuList } from '../navMenu'
 import styles from './index.module.css'
 import { useState } from 'react'
 import Link from 'next/link'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useRouter } from 'next/router'
 
 const CommonLayout: React.FC<any> = (props) => {
   const [showMenu, setShowMenu] = useState(false)
   const updateShowMenu = () => setShowMenu((r) => !r)
+  const router = useRouter()
   return (
     <div>
       <Head>
@@ -21,11 +24,22 @@ const CommonLayout: React.FC<any> = (props) => {
       <div className={showMenu ? styles.showMenu : styles.disabledMenu}>
         <div>
           <nav className={styles.mobileMenuWrapper}>
-            {menuList.map((i) => (
-              <Link key={i} href={`/${i}`}>
-                {i}
+            {menuList.map((i, index) => (
+              <Link
+                key={i}
+                href={i}
+                onClick={updateShowMenu}
+                style={{
+                  color: router.pathname === i ? '#ff4455' : '#000',
+                }}
+              >
+                {i === '/' ? 'home' : i.replace('/', '')}
               </Link>
             ))}
+            {/* <div className={styles.mobileConnectBtn}> */}
+            <div>
+              <ConnectButton />
+            </div>
           </nav>
         </div>
       </div>

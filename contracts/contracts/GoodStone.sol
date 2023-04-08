@@ -27,14 +27,11 @@ contract GoodStone is ERC721Enumerable, Ownable {
     string baseURI;
     string public notRevealedUri;
     string public baseExtension = ".json";
-    //设置签名
-    string private signature;
 
     bytes32 root; // whitelist
 
-    mapping(uint256 => string) private _tokenURIs;
 
-    constructor() ERC721("JianLiBao", "JLB") {}
+    constructor() ERC721("Hilton Love", "HL") {}
 
     function initial(
         string memory initBaseURI,
@@ -92,15 +89,7 @@ contract GoodStone is ERC721Enumerable, Ownable {
             // 盲盒模式
             return notRevealedUri;
         }
-
-        string memory _tokenURI = _tokenURIs[tokenId];
         string memory base = _baseURI();
-        if (bytes(base).length == 0) {
-            return _tokenURI;
-        }
-        if (bytes(_tokenURI).length > 0) {
-            return string(abi.encodePacked(base, _tokenURI));
-        }
         return
             string(abi.encodePacked(base, tokenId.toString(), baseExtension));
     }
@@ -113,10 +102,6 @@ contract GoodStone is ERC721Enumerable, Ownable {
     //only owner
     function flipSaleActive() public onlyOwner {
         _isSaleActive = !_isSaleActive;
-    }
-
-    function setSignature(string memory _signature) public onlyOwner {
-        signature = _signature;
     }
 
     function flipReveal() public onlyOwner {

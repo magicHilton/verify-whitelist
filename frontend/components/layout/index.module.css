@@ -62,7 +62,8 @@
     right: 0;
     bottom: 0;
     overflow-y: scroll;
-    height: 100vh;
+    height: calc(100vh - 80px);
+    /* height: 100vh; */
     padding: 2rem;
   }
 }
@@ -76,10 +77,14 @@
       flex-direction: column;
     }
     .mobileMenuWrapper a {
-      padding-bottom: 1rem;
-      padding-top: 1rem;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
       font-size: 1.2rem;
       color: #696969;
+    }
+    .mobileMenuWrapper > div {
+      position: fixed;
+      bottom: 4rem;
     }
   }
 }

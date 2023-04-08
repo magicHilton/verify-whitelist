@@ -6,7 +6,7 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
+import { mainnet, polygon, optimism, arbitrum, sepolia } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import CommonLayout from '../layout/indexa'
@@ -14,7 +14,7 @@ import CommonLayout from '../layout/indexa'
 const alchemyId = process.env.ALCHEMY_ID as string
 
 const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum],
+  [mainnet, polygon, optimism, arbitrum, sepolia],
   [alchemyProvider({ apiKey: alchemyId }), publicProvider()],
 )
 

@@ -14,6 +14,8 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-toastify": "^9.1.2",
+    "swr": "^2.1.2",
     "wagmi": "^0.12.9"
   },
   "devDependencies": {

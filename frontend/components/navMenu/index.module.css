@@ -11,7 +11,22 @@
   height: 80px;
   align-items: center;
 }
-
+.navActive::after {
+  content: '';
+  height: 4px;
+  width: 100%;
+  background-color: #ff4455;
+  border-radius: 8px;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: -16px;
+  box-shadow: 0px 1px 4px #ff4455;
+}
+.navActive {
+  position: relative;
+  color: #ff4455;
+}
 /* mobile */
 @media (max-width: 600px) {
   .btn {
@@ -24,6 +39,7 @@
     align-items: center;
     width: 22px;
     height: 22px;
+    cursor: pointer;
   }
   .mobileIcon::before {
     content: '';
